@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: L21
+  profiles:
+    active: dev
