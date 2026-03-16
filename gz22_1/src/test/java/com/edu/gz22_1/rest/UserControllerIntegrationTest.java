@@ -1,11 +1,14 @@
 package com.edu.gz22_1.rest;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -71,4 +74,31 @@ class UserControllerIntegrationTest {
 
     }
 
+    @Test
+    @SneakyThrows
+    void testCreaUser() {
+        mockMvc.perform(post("/users")
+                        .contentType("application/json")
+                        .content("""
+                                {
+                                    "name": "John Smith",
+                                    "age": 21
+                                }
+                                """))
+                .andExpect(status().isCreated())
+                .andDo(print())
+                .andExpect(jsonPath("$.name").value("John Smith"))
+                .andExpect(jsonPath("$.age").value(21));
+    }
+
+    @Test
+    @SneakyThrows
+    void testDeleteUserById() {
+        //Given - підготовка даних або налаштування середовища для тесту
+        //When - виконання дії, яку ми хочемо протестувати
+        //Then - перевірка результату, який ми очікуємо отримати
+        mockMvc.perform(delete("/users/{id}", 1L)
+                        .contentType("application/json"))
+                .andExpect(status().isNoContent());
+    }
 }
