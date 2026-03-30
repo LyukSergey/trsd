@@ -27,6 +27,15 @@
         </processorPath>
         <module name="gz22_1" />
       </profile>
+      <profile name="Annotation profile for L31" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.44/lombok-1.18.44.jar" />
+        </processorPath>
+        <module name="L31" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="gz22" target="25" />
@@ -35,6 +44,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="L21" options="-parameters" />
+      <module name="L31" options="-parameters" />
       <module name="gz22" options="-parameters" />
       <module name="gz22_1" options="-parameters" />
     </option>

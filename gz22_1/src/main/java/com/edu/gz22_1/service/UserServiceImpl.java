@@ -19,7 +19,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAllUsers() {
-        return userRepository.getAllUsers().stream()
+        final List<UserEntity> allUsers = userRepository.getAllUsers();
+        return allUsers.stream()
                 .map(this::convertToDto)
                 .toList();
     }
