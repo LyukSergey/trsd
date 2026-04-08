@@ -5,6 +5,8 @@
 
     <include file="db/changelog/bank.xml"/>
     <include file="db/changelog/user.xml"/>
+    <include file="db/changelog/user-profile.xml"/>
+    <include file="db/changelog/role.xml"/>
     <include file="db/changelog/test-data.xml"/>
 
 </databaseChangeLog>

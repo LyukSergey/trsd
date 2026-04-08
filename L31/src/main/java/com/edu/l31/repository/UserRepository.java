@@ -1,6 +1,7 @@
 package com.edu.l31.repository;
 
 import com.edu.l31.entity.User;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,5 +20,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(value = "SELECT * FROM users WHERE bank_id = :bankId ORDER BY LENGTH(surname) DESC LIMIT 1", nativeQuery = true)
     Optional<User> findTopUserWithLongestSurnameByBankId(@Param("bankId") Long bankId);
+
+    @Transactional
+    Optional<User> findByRolesId(Long rolId);
 
 }
