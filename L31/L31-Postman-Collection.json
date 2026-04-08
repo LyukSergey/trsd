@@ -1,0 +1,358 @@
+{
+	"info": {
+		"name": "L31 - Spring Boot REST API",
+		"description": "Collection for testing L31 REST endpoints: Banks, Users, Roles, Profiles",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080"
+		}
+	],
+	"item": [
+		{
+			"name": "1. Banks",
+			"item": [
+				{
+					"name": "GET All Banks",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/banks",
+							"host": ["{{baseUrl}}"],
+							"path": ["banks"]
+						}
+					}
+				},
+				{
+					"name": "GET Bank by ID (Privat Bank)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/banks/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["banks", "1"]
+						}
+					}
+				},
+				{
+					"name": "GET Bank by ID (Raiffeisen Bank)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/banks/2",
+							"host": ["{{baseUrl}}"],
+							"path": ["banks", "2"]
+						}
+					}
+				},
+				{
+					"name": "GET Bank by User ID (Ivan Franko -> Privat)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/banks/user/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["banks", "user", "1"]
+						}
+					}
+				},
+				{
+					"name": "GET Bank by User ID (Maria Curie -> Raiffeisen)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/banks/user/11",
+							"host": ["{{baseUrl}}"],
+							"path": ["banks", "user", "11"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "2. Users",
+			"item": [
+				{
+					"name": "GET All Users",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": ["{{baseUrl}}"],
+							"path": ["users"]
+						}
+					}
+				},
+				{
+					"name": "GET Users by Bank (Privat Bank - 10 users)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/banks/1/users",
+							"host": ["{{baseUrl}}"],
+							"path": ["banks", "1", "users"]
+						}
+					}
+				},
+				{
+					"name": "GET Users by Bank (Raiffeisen Bank - 5 users)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/banks/2/users",
+							"host": ["{{baseUrl}}"],
+							"path": ["banks", "2", "users"]
+						}
+					}
+				},
+				{
+					"name": "POST Create User in Privat Bank",
+					"request": {
+						"method": "POST",
+						"url": {
+							"raw": "{{baseUrl}}/banks/1/users",
+							"host": ["{{baseUrl}}"],
+							"path": ["banks", "1", "users"]
+						},
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Новий\",\n  \"surname\": \"Користувач\"\n}"
+						}
+					}
+				},
+				{
+					"name": "POST Create User in Raiffeisen Bank",
+					"request": {
+						"method": "POST",
+						"url": {
+							"raw": "{{baseUrl}}/banks/2/users",
+							"host": ["{{baseUrl}}"],
+							"path": ["banks", "2", "users"]
+						},
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Тестовий\",\n  \"surname\": \"Студент\"\n}"
+						}
+					}
+				},
+				{
+					"name": "DELETE User by ID",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "{{baseUrl}}/banks/users/16",
+							"host": ["{{baseUrl}}"],
+							"path": ["banks", "users", "16"]
+						}
+					}
+				},
+				{
+					"name": "GET Max Surname Length (SQL)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/banks/1/users/max-surname-length",
+							"host": ["{{baseUrl}}"],
+							"path": ["banks", "1", "users", "max-surname-length"]
+						}
+					}
+				},
+				{
+					"name": "GET Max Surname Length (Java Stream)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/banks/1/users/max-surname-length?with-stream=true",
+							"host": ["{{baseUrl}}"],
+							"path": ["banks", "1", "users", "max-surname-length"],
+							"query": [
+								{
+									"key": "with-stream",
+									"value": "true"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "3. Roles (ManyToMany)",
+			"item": [
+				{
+					"name": "GET All Roles",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/roles",
+							"host": ["{{baseUrl}}"],
+							"path": ["roles"]
+						}
+					}
+				},
+				{
+					"name": "GET Role by ID (ADMIN)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/roles/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["roles", "1"]
+						}
+					}
+				},
+				{
+					"name": "GET Role by ID (USER)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/roles/2",
+							"host": ["{{baseUrl}}"],
+							"path": ["roles", "2"]
+						}
+					}
+				},
+				{
+					"name": "GET Role by ID (MANAGER)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/roles/3",
+							"host": ["{{baseUrl}}"],
+							"path": ["roles", "3"]
+						}
+					}
+				},
+				{
+					"name": "GET Roles by User (Ivan Franko - ADMIN, USER)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/roles/user/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["roles", "user", "1"]
+						}
+					}
+				},
+				{
+					"name": "GET Roles by User (Taras Shevchenko - USER)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/roles/user/2",
+							"host": ["{{baseUrl}}"],
+							"path": ["roles", "user", "2"]
+						}
+					}
+				},
+				{
+					"name": "GET Roles by User (Lesya Ukrainka - USER, MANAGER)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/roles/user/3",
+							"host": ["{{baseUrl}}"],
+							"path": ["roles", "user", "3"]
+						}
+					}
+				},
+				{
+					"name": "GET Roles by User (Maria Curie - ADMIN)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/roles/user/11",
+							"host": ["{{baseUrl}}"],
+							"path": ["roles", "user", "11"]
+						}
+					}
+				},
+				{
+					"name": "GET Roles by User (Albert Einstein - USER, MANAGER)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/roles/user/12",
+							"host": ["{{baseUrl}}"],
+							"path": ["roles", "user", "12"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "4. User Profiles (OneToOne)",
+			"item": [
+				{
+					"name": "GET Profile (Ivan Franko)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/profiles/user/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["profiles", "user", "1"]
+						}
+					}
+				},
+				{
+					"name": "GET Profile (Taras Shevchenko)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/profiles/user/2",
+							"host": ["{{baseUrl}}"],
+							"path": ["profiles", "user", "2"]
+						}
+					}
+				},
+				{
+					"name": "GET Profile (Lesya Ukrainka)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/profiles/user/3",
+							"host": ["{{baseUrl}}"],
+							"path": ["profiles", "user", "3"]
+						}
+					}
+				},
+				{
+					"name": "GET Profile (Maria Curie)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/profiles/user/11",
+							"host": ["{{baseUrl}}"],
+							"path": ["profiles", "user", "11"]
+						}
+					}
+				},
+				{
+					"name": "GET Profile (Albert Einstein)",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/profiles/user/12",
+							"host": ["{{baseUrl}}"],
+							"path": ["profiles", "user", "12"]
+						}
+					}
+				}
+			]
+		}
+	]
+}

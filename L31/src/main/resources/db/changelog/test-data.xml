@@ -96,6 +96,91 @@
             <column name="bank_id" value="2"/>
         </insert>
 
+        <!-- Roles -->
+        <insert tableName="role">
+            <column name="id" value="1"/>
+            <column name="name" value="ADMIN"/>
+        </insert>
+        <insert tableName="role">
+            <column name="id" value="2"/>
+            <column name="name" value="USER"/>
+        </insert>
+        <insert tableName="role">
+            <column name="id" value="3"/>
+            <column name="name" value="MANAGER"/>
+        </insert>
+
+        <!-- User Profiles -->
+        <insert tableName="user_profile">
+            <column name="id" value="1"/>
+            <column name="email" value="ivan.franko@example.com"/>
+            <column name="phone" value="+380501111111"/>
+            <column name="user_id" value="1"/>
+        </insert>
+        <insert tableName="user_profile">
+            <column name="id" value="2"/>
+            <column name="email" value="taras.shevchenko@example.com"/>
+            <column name="phone" value="+380502222222"/>
+            <column name="user_id" value="2"/>
+        </insert>
+        <insert tableName="user_profile">
+            <column name="id" value="3"/>
+            <column name="email" value="lesya.ukrainka@example.com"/>
+            <column name="phone" value="+380503333333"/>
+            <column name="user_id" value="3"/>
+        </insert>
+        <insert tableName="user_profile">
+            <column name="id" value="4"/>
+            <column name="email" value="maria.curie@example.com"/>
+            <column name="phone" value="+380504444444"/>
+            <column name="user_id" value="11"/>
+        </insert>
+        <insert tableName="user_profile">
+            <column name="id" value="5"/>
+            <column name="email" value="albert.einstein@example.com"/>
+            <column name="phone" value="+380505555555"/>
+            <column name="user_id" value="12"/>
+        </insert>
+
+        <!-- User-Role assignments -->
+        <!-- Іван Франко — ADMIN, USER -->
+        <insert tableName="user_role">
+            <column name="user_id" value="1"/>
+            <column name="role_id" value="1"/>
+        </insert>
+        <insert tableName="user_role">
+            <column name="user_id" value="1"/>
+            <column name="role_id" value="2"/>
+        </insert>
+        <!-- Тарас Шевченко — USER -->
+        <insert tableName="user_role">
+            <column name="user_id" value="2"/>
+            <column name="role_id" value="2"/>
+        </insert>
+        <!-- Леся Українка — MANAGER, USER -->
+        <insert tableName="user_role">
+            <column name="user_id" value="3"/>
+            <column name="role_id" value="2"/>
+        </insert>
+        <insert tableName="user_role">
+            <column name="user_id" value="3"/>
+            <column name="role_id" value="3"/>
+        </insert>
+        <!-- Марія Кюрі — ADMIN -->
+        <insert tableName="user_role">
+            <column name="user_id" value="11"/>
+            <column name="role_id" value="1"/>
+        </insert>
+        <!-- Альберт Ейнштейн — USER, MANAGER -->
+        <insert tableName="user_role">
+            <column name="user_id" value="12"/>
+            <column name="role_id" value="2"/>
+        </insert>
+        <insert tableName="user_role">
+            <column name="user_id" value="12"/>
+            <column name="role_id" value="3"/>
+        </insert>
+
     </changeSet>
 
 </databaseChangeLog>
