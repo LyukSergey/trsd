@@ -18,6 +18,7 @@ public class UserRegistrationServiceImpl {
     private final UserProfileRepository userProfileRepository;
     private final RoleRepository roleRepository;
 
+    @Transactional
     public User registerUserWithProfileAndRole(String name, String surname,
             String email, String phone, String roleName) {
 
@@ -25,13 +26,13 @@ public class UserRegistrationServiceImpl {
         User user = new User();
         user.setName(name);
         user.setSurname(surname);
-        user = userRepository.save(user);
+//        user = userRepository.save(user);
 
         UserProfile profile = new UserProfile();
         profile.setEmail(email);
         profile.setPhone(phone);
         profile.setUser(user);
-        userProfileRepository.save(profile);
+//        userProfileRepository.save(profile);
         user.setProfile(profile);
 
         // 3. Знаходимо або створюємо роль (ManyToMany)
