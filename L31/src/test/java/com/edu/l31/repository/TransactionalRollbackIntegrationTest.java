@@ -14,6 +14,8 @@ class TransactionalRollbackIntegrationTest extends AbstractIntegrationTest {
     private UserRegistrationServiceImpl registrationService;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserProfileRepository userProfileRepository;
 
     @Test
     void testTransactional_successfulRegistration() {
@@ -33,7 +35,7 @@ class TransactionalRollbackIntegrationTest extends AbstractIntegrationTest {
         long countBefore = userRepository.count();
 
         assertThrows(RuntimeException.class, () ->
-                registrationService.registerUserThatFails("Fail", "User", "fail@test.com")
+                registrationService.registerUserThatFails("Fail", "User", "fail@test.com", true)
         );
 
         // Юзер НЕ збережений — транзакція відкотилась

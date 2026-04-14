@@ -8,6 +8,7 @@ import com.edu.l31.repository.UserProfileRepository;
 import com.edu.l31.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -47,15 +48,17 @@ public class UserRegistrationServiceImpl {
         return userRepository.save(user);
     }
 
-    /**
-     * Приклад з примусовим rollback через RuntimeException
-     */
     @Transactional
-    public User registerUserThatFails(String name, String surname, String email) {
+    public User registerUserThatFails(String name, String surname, String email, boolean shouldFail) {
         User user = new User();
         user.setName(name);
         user.setSurname(surname);
         user = userRepository.save(user);
+
+        if (shouldFail) {
+            // Симулюємо помилку — все що вище буде відкочено!
+            throw new RuntimeException("Щось пішло не так — транзакція відкотиться!");
+        }
 
         UserProfile profile = new UserProfile();
         profile.setEmail(email);
@@ -63,10 +66,8 @@ public class UserRegistrationServiceImpl {
         profile.setUser(user);
         userProfileRepository.save(profile);
 
-        // Симулюємо помилку — все що вище буде відкочено!
-        throw new RuntimeException("Щось пішло не так — транзакція відкотиться!");
+        return user;
     }
-
 
 
 }
