@@ -29,24 +29,35 @@
         </processorPath>
         <module name="gz22_1" />
       </profile>
-      <profile name="Annotation profile for L31" enabled="true">
+      <profile name="Annotation profile for gz_3_3" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.44/lombok-1.18.44.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.44/lombok-1.18.44.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
         </processorPath>
-        <module name="L31" />
+        <module name="gz_3_3" />
       </profile>
-      <profile name="Annotation profile for gz_32_starter_test" enabled="true">
+      <profile name="Annotation profile for profiler_test" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.44/lombok-1.18.44.jar" />
         </processorPath>
+        <module name="profiler_test" />
         <module name="gz_32_starter_test" />
+      </profile>
+      <profile name="Annotation profile for profiling_starter" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.44/lombok-1.18.44.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.44/lombok-1.18.44.jar" />
+        </processorPath>
+        <module name="profiling_starter" />
+        <module name="L31" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -59,8 +70,11 @@
       <module name="L31" options="-parameters" />
       <module name="gz22" options="-parameters" />
       <module name="gz22_1" options="-parameters" />
-      <module name="gz_32_starter" options="-parameters" />
+      <module name="gz_32_starter" options="" />
       <module name="gz_32_starter_test" options="-parameters" />
+      <module name="gz_3_3" options="-parameters" />
+      <module name="profiler_test" options="-parameters" />
+      <module name="profiling_starter" options="" />
     </option>
   </component>
 </project>

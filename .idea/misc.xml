@@ -10,6 +10,9 @@
         <option value="$PROJECT_DIR$/L31/pom.xml" />
         <option value="$PROJECT_DIR$/gz_32_starter/pom.xml" />
         <option value="$PROJECT_DIR$/gz_32_starter_test/pom.xml" />
+        <option value="$PROJECT_DIR$/profiler_test/pom.xml" />
+        <option value="$PROJECT_DIR$/profiling_starter/pom.xml" />
+        <option value="$PROJECT_DIR$/gz_3_3/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

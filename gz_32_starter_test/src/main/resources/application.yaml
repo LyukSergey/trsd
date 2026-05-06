@@ -8,4 +8,4 @@ spring:
     password: ${postgresql_password:sa}
 
 profiling:
-  enabled: true
+  enabled: false

@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: profiler_test
+profiling:
+  enabled: false
