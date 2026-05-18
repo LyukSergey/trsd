@@ -29,15 +29,14 @@
         </processorPath>
         <module name="gz22_1" />
       </profile>
-      <profile name="Annotation profile for gz_3_3" enabled="true">
+      <profile name="Annotation profile for L41" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
         </processorPath>
-        <module name="gz_3_3" />
+        <module name="L41" />
       </profile>
       <profile name="Annotation profile for profiler_test" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -60,14 +59,16 @@
         <module name="profiling_starter" />
         <module name="L31" />
       </profile>
-      <profile name="Annotation profile for L41" enabled="true">
+      <profile name="Annotation profile for L41_1" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
         </processorPath>
-        <module name="L41" />
+        <module name="L41_1" />
+        <module name="gz_3_3" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -79,6 +80,7 @@
       <module name="L21" options="-parameters" />
       <module name="L31" options="-parameters" />
       <module name="L41" options="-parameters" />
+      <module name="L41_1" options="-parameters" />
       <module name="gz22" options="-parameters" />
       <module name="gz22_1" options="-parameters" />
       <module name="gz_32_starter" options="" />

@@ -40,8 +40,7 @@ public class SecurityConfig {
                 // ====== CORS ======
                 // Крок 1: Закоментовано → CORS заблокований (браузер блокує відповідь)
                 // Крок 2: Розкоментувати → CORS дозволений для localhost:3000
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                ;
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
         return http.build();
     }
