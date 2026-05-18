@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>CORS Demo — Фронтенд на порту 3000</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 700px; margin: 50px auto; }
+        h1 { color: #e53935; }
+        button { padding: 12px 24px; font-size: 16px; margin: 5px; cursor: pointer; border: none; border-radius: 4px; color: white; }
+        .btn-fetch { background: #1976d2; }
+        .btn-post { background: #e53935; }
+        #result { background: #f5f5f5; padding: 15px; border-radius: 8px; margin-top: 20px;
+                  white-space: pre-wrap; font-family: monospace; min-height: 100px; }
+        .success { border-left: 4px solid #2e7d32; }
+        .error { border-left: 4px solid #e53935; }
+        .explanation { background: #fff3e0; padding: 15px; border-radius: 8px; margin-top: 20px; font-size: 14px; }
+        code { background: #eee; padding: 2px 6px; border-radius: 3px; }
+        .origin-info { background: #e3f2fd; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>CORS Demo</h1>
+
+    <div class="origin-info">
+        <strong>Ця сторінка:</strong> <code>http://localhost:3000</code> (інший origin)<br>
+        <strong>API сервер:</strong> <code>http://localhost:8080</code><br>
+        <strong>Origin різні</strong> → браузер застосовує Same-Origin Policy → потрібен CORS
+    </div>
+
+    <button class="btn-fetch" onclick="fetchUsers()">
+        GET /api/users (fetch)
+    </button>
+
+    <button class="btn-post" onclick="postTransfer()">
+        POST /transfer (fetch)
+    </button>
+
+    <div id="result">Натисніть кнопку щоб зробити запит...</div>
+
+    <div class="explanation">
+        <h3>Що відбувається:</h3>
+        <ol>
+            <li>Ця сторінка працює на <code>http://localhost:3000</code></li>
+            <li>JavaScript робить <code>fetch()</code> до <code>http://localhost:8080</code></li>
+            <li>Браузер бачить що origin різні → перевіряє CORS headers у відповіді</li>
+            <li><strong>Без CORS конфігурації</strong> на сервері → браузер блокує відповідь</li>
+            <li><strong>З CORS конфігурацією</strong> → сервер додає <code>Access-Control-Allow-Origin</code> → браузер дозволяє</li>
+        </ol>
+
+        <h3>Зверніть увагу:</h3>
+        <ul>
+            <li>Відкрийте <strong>F12 → Network</strong> → подивіться на запит</li>
+            <li>Без CORS: запит <strong>відправляється</strong> на сервер, але браузер <strong>блокує відповідь</strong> для JavaScript</li>
+            <li>Для POST з <code>Content-Type: application/json</code> браузер спочатку шле <strong>OPTIONS</strong> (preflight request)</li>
+        </ul>
+
+        <h3>Як увімкнути CORS на сервері:</h3>
+        <pre>
+// SecurityConfig.java
+.cors(cors -> cors.configurationSource(corsConfig()))
+
+// або на контролері:
+@CrossOrigin(origins = "http://localhost:3000")</pre>
+    </div>
+
+    <script>
+        const API = 'http://localhost:8080';
+        const resultDiv = document.getElementById('result');
+
+        function showResult(text, isError) {
+            resultDiv.textContent = text;
+            resultDiv.className = isError ? 'error' : 'success';
+        }
+
+        async function fetchUsers() {
+            showResult('Відправляю GET /api/users ...');
+            try {
+                const response = await fetch(API + '/api/users', {
+                    credentials: 'include'  // відправляємо cookies (session)
+                });
+                const data = await response.json();
+                showResult('SUCCESS! Отримано ' + data.length + ' користувачів:\n\n' +
+                    JSON.stringify(data, null, 2), false);
+            } catch (error) {
+                showResult('CORS BLOCKED!\n\n' +
+                    'Помилка: ' + error.message + '\n\n' +
+                    'Браузер заблокував відповідь від localhost:8080\n' +
+                    'бо сервер не повернув заголовок:\n' +
+                    'Access-Control-Allow-Origin: http://localhost:3000\n\n' +
+                    'Перевірте F12 → Console для деталей', true);
+            }
+        }
+
+        async function postTransfer() {
+            showResult('Відправляю POST /transfer ...\n(Браузер спочатку шле OPTIONS — preflight request)');
+            try {
+                const response = await fetch(API + '/transfer', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'to=HACKER-123&amount=5000'
+                });
+                const text = await response.text();
+                showResult('SUCCESS! Відповідь:\n\n' + text, false);
+            } catch (error) {
+                showResult('CORS BLOCKED!\n\n' +
+                    'Помилка: ' + error.message + '\n\n' +
+                    'POST запит заблокований браузером.\n' +
+                    'Перевірте F12 → Network → знайдіть OPTIONS запит (preflight)', true);
+            }
+        }
+    </script>
+</body>
+</html>
