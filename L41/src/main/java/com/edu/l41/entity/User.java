@@ -33,4 +33,6 @@ public class User {
     private String address;
 
     private String passwordHash;
+
+    private Double balance;
 }

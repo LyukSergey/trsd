@@ -15,16 +15,20 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/api/users/**").permitAll()
+                        .requestMatchers("/evil.html").permitAll()
                         .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers("/h2-console/**")
                 )
+//                .csrf(csrf -> csrf.disable())
                 .headers(headers -> headers
                         .frameOptions(frame -> frame.sameOrigin())
                 )
-                .formLogin(login -> login.permitAll());
+                .formLogin(login -> login
+                        .defaultSuccessUrl("/api/users", true)
+                        .permitAll()
+                );
 
         return http.build();
     }
