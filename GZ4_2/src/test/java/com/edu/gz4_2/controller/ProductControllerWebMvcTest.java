@@ -1,60 +1,61 @@
 package com.edu.gz4_2.controller;
 
 import com.edu.gz4_2.entity.Product;
-import com.edu.gz4_2.service.ProductService;
+import com.edu.gz4_2.repository.ProductRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * INTEGRATION TEST (Web Layer) — тестуємо Controller + Spring MVC.
  *
- * @WebMvcTest — піднімає ТІЛЬКИ web-шар (Controller, Filters, ExceptionHandlers).
- *   НЕ піднімає: Service, Repository, Database.
- *   ProductService замінений на @MockitoBean.
- *
+ * @WebMvcTest — піднімає ТІЛЬКИ web-шар (Controller, Filters, ExceptionHandlers). НЕ піднімає: Service, Repository, Database.
+ * ProductService замінений на @MockitoBean.
+ * <p>
  * MockMvc — виконує HTTP-запити БЕЗ запуску реального сервера (in-memory).
- *
- * Що тестуємо:
- *   - HTTP статус коди (200, 201, 404)
- *   - JSON response body
- *   - Request mapping (@GetMapping, @PostMapping)
- *   - Content-Type
+ * <p>
+ * Що тестуємо: - HTTP статус коди (200, 201, 404) - JSON response body - Request mapping (@GetMapping, @PostMapping) - Content-Type
  */
-@WebMvcTest(ProductController.class)
+@AutoConfigureMockMvc
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DisplayName("ProductController — @WebMvcTest")
 class ProductControllerWebMvcTest {
 
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private ProductRepository productRepository;
 
-    @MockitoBean
-    private ProductService productService;
+    @AfterEach
+    void tearDown() {
+        productRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("GET /api/products — should return list of products")
     void getAllProducts_shouldReturnList() throws Exception {
         // Arrange
         List<Product> products = List.of(
-                Product.builder().id(1L).name("Laptop").price(25000.0).category("Electronics").build(),
-                Product.builder().id(2L).name("Book").price(350.0).category("Books").build()
+                Product.builder().name("Laptop").price(25000.0).category("Electronics").build(),
+                Product.builder().name("Book").price(350.0).category("Books").build()
         );
-        when(productService.getAllProducts()).thenReturn(products);
+        productRepository.saveAll(products);
 
         // Act & Assert
         mockMvc.perform(get("/api/products"))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(2)))
@@ -68,8 +69,8 @@ class ProductControllerWebMvcTest {
     void getById_shouldReturnProduct() throws Exception {
         // Arrange
         Product product = Product.builder()
-                .id(1L).name("Laptop").price(25000.0).category("Electronics").build();
-        when(productService.getProductById(1L)).thenReturn(product);
+                .name("Laptop").price(25000.0).category("Electronics").build();
+        productRepository.save(product);
 
         // Act & Assert
         mockMvc.perform(get("/api/products/1"))
@@ -83,8 +84,6 @@ class ProductControllerWebMvcTest {
     @DisplayName("GET /api/products/{id} — should return 404 when not found")
     void getById_shouldReturn404_WhenNotFound() throws Exception {
         // Arrange
-        when(productService.getProductById(999L))
-                .thenThrow(new RuntimeException("Product not found: 999"));
 
         // Act & Assert
         mockMvc.perform(get("/api/products/999"))
@@ -97,8 +96,8 @@ class ProductControllerWebMvcTest {
     void createProduct_shouldReturn201() throws Exception {
         // Arrange
         Product saved = Product.builder()
-                .id(1L).name("Phone").price(15000.0).category("Electronics").build();
-        when(productService.createProduct(any(Product.class))).thenReturn(saved);
+                .name("Phone").price(15000.0).category("Electronics").build();
+        productRepository.save(saved);
 
         // Act & Assert
         mockMvc.perform(post("/api/products")
@@ -129,9 +128,8 @@ class ProductControllerWebMvcTest {
     void getDiscount_shouldReturnDiscountInfo() throws Exception {
         // Arrange
         Product product = Product.builder()
-                .id(1L).name("Laptop").price(20000.0).build();
-        when(productService.getProductById(1L)).thenReturn(product);
-        when(productService.calculateDiscount(1L)).thenReturn(3000.0);
+                .name("Laptop").price(20000.0).build();
+        productRepository.save(product);
 
         // Act & Assert
         mockMvc.perform(get("/api/products/1/discount"))

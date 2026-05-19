@@ -50,7 +50,7 @@ class ProductServiceUnitTest {
         @Test
         @DisplayName("should save product when data is valid")
         void shouldSaveProduct_WhenDataIsValid() {
-            // Arrange
+            // Given
             Product product = Product.builder()
                     .name("Laptop")
                     .price(25000.0)
@@ -65,14 +65,14 @@ class ProductServiceUnitTest {
                             .category("Electronics")
                             .build());
 
-            // Act
+            // When
             Product result = productService.createProduct(product);
 
-            // Assert
+            // Then
             assertNotNull(result.getId());
             assertEquals("Laptop", result.getName());
             assertEquals(25000.0, result.getPrice());
-            verify(productRepository, times(1)).save(any(Product.class));
+            verify(productRepository, times(1)).save(eq(product));
         }
 
         @Test
