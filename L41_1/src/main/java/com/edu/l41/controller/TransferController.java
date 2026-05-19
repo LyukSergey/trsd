@@ -3,6 +3,8 @@ package com.edu.l41.controller;
 import com.edu.l41.entity.User;
 import com.edu.l41.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,26 +17,27 @@ public class TransferController {
 
     private final UserRepository userRepository;
 
-    // Сторінка банку — форма переказу
+    // Сторінка банку — дані поточного залогіненого користувача
     @GetMapping("/bank")
-    public String bankPage(Model model) {
-        User ivan = userRepository.findById(1L).orElseThrow();
-        model.addAttribute("user", ivan);
+    public String bankPage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
+        model.addAttribute("user", user);
         return "bank";
     }
 
-    // POST — виконати переказ
+    // POST — переказ від поточного залогіненого користувача
     @PostMapping("/transfer")
-    public String transfer(@RequestParam String to,
+    public String transfer(@AuthenticationPrincipal UserDetails userDetails,
+                           @RequestParam String to,
                            @RequestParam Double amount,
                            Model model) {
 
-        User ivan = userRepository.findById(1L).orElseThrow();
+        User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
 
-        ivan.setBalance(ivan.getBalance() - amount);
-        userRepository.save(ivan);
+        user.setBalance(user.getBalance() - amount);
+        userRepository.save(user);
 
-        model.addAttribute("user", ivan);
+        model.addAttribute("user", user);
         model.addAttribute("message",
                 "Переказано " + amount + " грн на рахунок: " + to);
 

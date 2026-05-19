@@ -1,5 +1,6 @@
 package com.edu.l41.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -8,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -16,7 +18,10 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final SecurityContextLoggingFilter securityContextLoggingFilter;
 
     /**
      * PasswordEncoder — Spring Security використовує його для:
@@ -50,9 +55,13 @@ public class SecurityConfig {
                         // Публічні ресурси — без автентифікації
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/evil.html").permitAll()
+                        .requestMatchers("/register").permitAll()
 
                         // GET /api/users — дозволено всім (каталог)
                         .requestMatchers(HttpMethod.GET, "/api/users").permitAll()
+
+                        // POST /api/users/register — реєстрація без логіну
+                        .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
 
                         // DELETE /api/users/** — тільки ADMIN
                         .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole("ADMIN")
@@ -80,6 +89,9 @@ public class SecurityConfig {
                 )
                 // HTTP Basic — для curl / Postman / REST клієнтів
                 .httpBasic(basic -> {})
+
+                // Логування SecurityContext ПІСЛЯ автентифікації
+                .addFilterAfter(securityContextLoggingFilter, BasicAuthenticationFilter.class)
 
                 .logout(logout -> logout
                         .logoutSuccessUrl("/login?logout")
