@@ -51,7 +51,7 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         // Які origins дозволені (звідки можуть приходити запити)
-        config.setAllowedOrigins(List.of("http://localhost:3000"));
+        config.setAllowedOrigins(List.of("http://localhost:3001"));
 
         // Які HTTP методи дозволені
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
